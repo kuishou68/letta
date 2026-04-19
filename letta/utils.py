@@ -506,6 +506,10 @@ def sanitize_tool_call_id(tool_id: str) -> str:
     if not TOOL_CALL_ID_PATTERN.match(tool_id):
         tool_id = re.sub(r"[^a-zA-Z0-9_-]", "_", tool_id)
     # Truncate to max length
+    if len(tool_id) > TOOL_CALL_ID_MAX_LEN:
+        logger.warning(
+            f"tool_call_id '{tool_id}' exceeds max length {TOOL_CALL_ID_MAX_LEN}, truncating to {TOOL_CALL_ID_MAX_LEN} characters"
+        )
     return tool_id[:TOOL_CALL_ID_MAX_LEN]
 
 
